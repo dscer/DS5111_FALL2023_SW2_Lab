@@ -6,48 +6,37 @@ sys.path.append(".")
 
 from bin.perceptron import Perceptron
 
-@pytest.fixture(scope="module")
-def trained_perceptron():
+def test_perceptron():
+    # GIVEN a Preceptron object with known trainingset values
     the_perceptron = Perceptron()
     the_perceptron.train([
-        [1, 1],
-        [1, 0],
-        [0, 1],
-        [0, 0],
-    ], [1, 1, 1, 0])
-    return the_perceptron
-
-def test_perceptron(trained_perceptron):
-    # GIVEN a Preceptron object with known trainingset values
-    # the_perceptron = Perceptron()
-    # the_perceptron.train([
-    #     [1,1],
-    #     [1,0],
-    #     [0,1],
-    #     [0,0],
-    # ], [1,1,1,0])
+        [1,1],
+        [1,0],
+        [0,1],
+        [0,0],
+    ], [1,1,1,0])
 
     # WHEN we call predict() on the object with known values
     # THEN the result will be an integer of known value
-    assert trained_perceptron.predict([1, 1]) == 1, "Failed: [1, 1] should predict 1"
-    assert trained_perceptron.predict([1, 0]) == 1, "Failed: [1, 0] should predict 1"
-    assert trained_perceptron.predict([0, 1]) == 1, "Failed: [0, 1] should predict 1"
-    assert trained_perceptron.predict([0, 0]) == 0, "Failed: [0, 0] should predict 0"
+    assert the_perceptron.predict([1, 1]) == 1, "Failed: [1, 1] should predict 1"
+    assert the_perceptron.predict([1, 0]) == 1, "Failed: [1, 0] should predict 1"
+    assert the_perceptron.predict([0, 1]) == 1, "Failed: [0, 1] should predict 1"
+    assert the_perceptron.predict([0, 0]) == 0, "Failed: [0, 0] should predict 0"
 
 @pytest.mark.xfail
-def test_failing_perceptron(trained_perceptron):
+def test_failing_perceptron():
     # GIVEN a Preceptron object with known trainingset values
-    # the_perceptron = Perceptron()
-    # the_perceptron.train([
-    #     [1,1],
-    #     [1,0],
-    #     [0,1],
-    #     [0,0],
-    # ], [1,1,1,0])
+    the_perceptron = Perceptron()
+    the_perceptron.train([
+        [1,1],
+        [1,0],
+        [0,1],
+        [0,0],
+    ], [1,1,1,0])
     
     # WHEN we call predict() on the object with known values
     # THEN the result will be an integer of known value
-    assert trained_perceptron.predict([1, 0]) == 0, "Negative test: [1, 0] should not predict 0"
+    assert the_perceptron.predict([1, 0]) == 0, "Negative test: [1, 0] should not predict 0"
 
 @pytest.mark.skipif(not platform.system() == 'Linux',
                     reason="Test requires Linux Ubuntu")
@@ -88,3 +77,49 @@ def test_perceptron_multi(training_set, labels, expected_predictions):
         prediction = the_perceptron.predict(input_data)
         # THEN the result will be an integer of known value
         assert prediction == expected_predictions[i], f"Failed: {input_data} should predict {expected_predictions[i]}"
+
+######################
+# Extra Credit
+######################
+
+@pytest.fixture(scope="module")
+def trained_perceptron():
+    the_perceptron = Perceptron()
+    the_perceptron.train([
+        [1, 1],
+        [1, 0],
+        [0, 1],
+        [0, 0],
+    ], [1, 1, 1, 0])
+    return the_perceptron
+
+def test_perceptron_fixture_1(trained_perceptron):
+    # GIVEN a Preceptron object with known trainingset values
+    # WHEN we call predict() on the object with known values
+    # THEN the result will be an integer of known value
+    assert trained_perceptron.predict([1, 1]) == 1, "Failed: [1, 1] should predict 1"
+    
+def test_perceptron_fixture_2(trained_perceptron):
+    # GIVEN a Preceptron object with known trainingset values
+    # WHEN we call predict() on the object with known values
+    # THEN the result will be an integer of known value    
+    assert trained_perceptron.predict([1, 0]) == 1, "Failed: [1, 0] should predict 1"
+    
+def test_perceptron_fixture_3(trained_perceptron):
+    # GIVEN a Preceptron object with known trainingset values
+    # WHEN we call predict() on the object with known values
+    # THEN the result will be an integer of known value    
+    assert trained_perceptron.predict([0, 1]) == 1, "Failed: [0, 1] should predict 1"
+    
+def test_perceptron_fixture_4(trained_perceptron):
+    # GIVEN a Preceptron object with known trainingset values
+    # WHEN we call predict() on the object with known values
+    # THEN the result will be an integer of known value    
+    assert trained_perceptron.predict([0, 0]) == 0, "Failed: [0, 0] should predict 0"
+
+@pytest.mark.xfail
+def test_perceptron_fixture_5(trained_perceptron):
+    # GIVEN a Preceptron object with known trainingset values
+    # WHEN we call predict() on the object with known values
+    # THEN the result will be an integer of known value
+    assert trained_perceptron.predict([1, 0]) == 0, "Negative test: [1, 0] should not predict 0"
